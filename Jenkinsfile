@@ -1,3 +1,4 @@
+// Test after plugin install
 pipeline {  // Defines the whole pipeline
     agent {  // Runs in a Docker container with Node.js pre-installed
         docker {
