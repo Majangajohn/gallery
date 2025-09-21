@@ -51,7 +51,7 @@ Configured the application to connect to MongoDB Atlas and set up Render for dep
    - Disabled auto-deploys for pipeline control.
 
 ### Screenshot
-images/MongoAtlas.png
+![Milestone 1 Pipeline](public/images/MongoAtlas.png)
 
 
 ## Milestone 2: Basic Pipeline
@@ -93,8 +93,8 @@ Created a Jenkins pipeline to build and deploy the app automatically on GitHub p
    - Pushed changes, verified on Render.
 
 ### Screenshot
-![Milestone 2 Pipeline](images/landing_page.png)  
-![Milestone 2 deployment on jenkins using docker](images/jenkins.png)
+![Milestone 2 Pipeline](public/images/landing_page.png)  
+![Milestone 2 deployment on jenkins using docker](public/images/jenkins.png)
 
 ## Milestone 3: Tests
 Merged tests from the `test` branch and updated the pipeline to run them, with email notifications on failure.
@@ -132,9 +132,9 @@ Merged tests from the `test` branch and updated the pipeline to run them, with e
    - Pushed, verified tests passed, and Render updated.
 
 ### Screenshot
-![Milestone 3 landing page](images/landing_page.png)  
-![Milestone 3 Tests](images/tests.png) 
-![Milestone 3 email notification](images/emailtests.png) 
+![Milestone 3 landing page](public/images/landing_page.png)  
+![Milestone 3 Tests](public/images/tests.png) 
+![Milestone 3 email notification](public/images/emailtests.png) 
 
 
 ## Milestone 4: Slack Integration
@@ -180,7 +180,7 @@ Integrated Slack to send notifications on successful deploys, including build de
    - Pushed, verified Slack notification and Render update.
 
 ### Screenshot
-![Milestone 4 Slack](images/slack.png)  
+![Milestone 4 Slack](public/images/slack.png)  
 
 ## Landing Page
 The landing page (`views/index.ejs`) displays the milestones prominently:
@@ -188,7 +188,7 @@ The landing page (`views/index.ejs`) displays the milestones prominently:
 - `<h1 style="font-size: 3em; color: blue;">MILESTONE 3</h1>`
 - `<h1 style="font-size: 3em; color: green;">MILESTONE 4</h1>`
 
-![Landing Page](images/landing_page.png)  
+![Landing Page](public/images/landing_page.png)  
 
 ## Render Deployment
 The application is live at: https://darkroom-app.onrender.com
