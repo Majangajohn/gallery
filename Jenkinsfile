@@ -8,7 +8,7 @@ pipeline {  // Whole pipeline
     environment {  // Variables 
         RENDER_DEPLOY_HOOK = credentials('render-deploy-hook')
         RENDER_URL = 'https://darkroom-app.onrender.com'  //actual Render URL
-        SLACK_CHANNEL = '#john_ip1'  // channel, e.g., '#johnny_ip1'
+        SLACK_CHANNEL = '#john_ip1'  // channel, e.g., '#john_ip1'
     }
 
     stages {
