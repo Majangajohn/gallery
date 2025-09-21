@@ -51,7 +51,7 @@ Configured the application to connect to MongoDB Atlas and set up Render for dep
    - Disabled auto-deploys for pipeline control.
 
 ### Screenshot
-![Milestone 1 Setup](images/MongoAtlas.png)  
+images/MongoAtlas.png
 
 
 ## Milestone 2: Basic Pipeline
