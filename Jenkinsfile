@@ -1,26 +1,39 @@
-// Test after plugin install
 pipeline {  // Defines the whole pipeline
-    agent {  // Runs in a Docker container with Node.js pre-installed
+    agent {  // Runs in Node.js Docker
         docker {
-            image 'node:lts'  // Uses latest long-term support Node.js
+            image 'node:lts'
         }
     }
 
-    environment {  // Sets variables for the pipeline
-        RENDER_DEPLOY_HOOK = credentials('render-deploy-hook')  // Pulls the secure hook from Jenkins credentials
+    environment {  // Variables
+        RENDER_DEPLOY_HOOK = credentials('render-deploy-hook')
     }
 
-    stages {  // The main steps of the pipeline
-        stage('Build') {  // Stage 1: Install dependencies
+    stages {  // Steps
+        stage('Build') {  // Install deps
             steps {
-                sh 'npm ci'  // Runs npm install to get all packages
+                sh 'npm ci'
             }
         }
 
-        stage('Deploy') {  // Stage 2: Trigger deploy to Render
+        stage('Test') {  // Run tests
             steps {
-                sh "curl -X POST \${RENDER_DEPLOY_HOOK}"  // Sends a POST request to Render's hook to start deploy
+                sh 'npm test'  // Executes the tests
             }
+        }
+
+        stage('Deploy') {  // Trigger Render
+            steps {
+                sh "curl -X POST \${RENDER_DEPLOY_HOOK}"
+            }
+        }
+    }
+
+    post {  // Actions after stages
+        failure {  // If any stage fails (e.g., tests)
+            mail to: 'your.email@example.com',  // Replace with your email
+                 subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",  // Email subject with job info
+                 body: "The build failed. Check console output at ${env.BUILD_URL}."  // Email body with link
         }
     }
 }
