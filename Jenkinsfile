@@ -31,7 +31,7 @@ pipeline {  // Defines the whole pipeline
 
     post {  // Actions after stages
         failure {  // If any stage fails (e.g., tests)
-            mail to: 'your.email@example.com',  // Replace with your email
+            mail to: 'jnmajanga@gmail.com',  
                  subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",  // Email subject with job info
                  body: "The build failed. Check console output at ${env.BUILD_URL}."  // Email body with link
         }
