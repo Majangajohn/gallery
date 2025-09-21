@@ -1,7 +1,8 @@
 process.env.NODE_ENV = 'test';   
 
-var chai = require('chai');
-var chaiHttp = require('chai-http');
+// commenting out so that the pipeline fails in order to get notifications
+//var chai = require('chai');
+//var chaiHttp = require('chai-http');
 
 var server = require('../server');
 var should = chai.should();
