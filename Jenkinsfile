@@ -13,7 +13,7 @@ pipeline {  // Defines the whole pipeline
     stages {  // The main steps of the pipeline
         stage('Build') {  // Stage 1: Install dependencies
             steps {
-                sh 'npm install'  // Runs npm install to get all packages
+                sh 'npm ci'  // Runs npm install to get all packages
             }
         }
 
