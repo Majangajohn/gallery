@@ -76,12 +76,14 @@ Created a Jenkins pipeline to build and deploy the app automatically on GitHub p
 
 3. **Jenkinsfile**:
    - Defined a pipeline using a Docker agent (`node:lts`) for Node.js.
-   - Stages: Build (installs dependencies) and Deploy (triggers Render).
+   - Stages: checkout to clone the repository,build (installs dependencies) and Deploy (triggers Render).
    ```groovy
    pipeline {
        agent { docker { image 'node:lts' } }
        environment { RENDER_DEPLOY_HOOK = credentials('render-deploy-hook') }
+      triggers {githubPush()}
        stages {
+            stage('Checkout') { steps { git branch: 'master', url: 'https://github.com/Majangajohn/gallery.git' } }
            stage('Build') { steps { sh 'npm install' } }
            stage('Deploy') { steps { sh "curl -X POST \${RENDER_DEPLOY_HOOK}" } }
        }
