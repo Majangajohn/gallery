@@ -346,7 +346,6 @@ The landing page (`views/index.ejs`) displays the milestones prominently:
 - `<h1 style="font-size: 3em; color: green;">MILESTONE 4</h1>`
 
 ![Landing Page](public/images/landing_page.png)  
-```
 
 ## Render Deployment
 The application is live at: https://darkroom-app.onrender.com
