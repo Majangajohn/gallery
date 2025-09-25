@@ -330,7 +330,7 @@ Check console output at ${env.BUILD_URL} for details."""
            }
        }
    }
-   ```
+   
 
 3. **Landing Page Update**:
    - Added `<h1 style="font-size: 3em; color: green;">MILESTONE 4</h1>` below others.
@@ -346,6 +346,7 @@ The landing page (`views/index.ejs`) displays the milestones prominently:
 - `<h1 style="font-size: 3em; color: green;">MILESTONE 4</h1>`
 
 ![Landing Page](public/images/landing_page.png)  
+```
 
 ## Render Deployment
 The application is live at: https://darkroom-app.onrender.com
