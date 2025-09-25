@@ -12,9 +12,13 @@ pipeline {  // Whole pipeline
         FAILED_STAGE = ''  // To capture failing stage for email
     }
 
+    triggers {
+        githubPush()
+    }
+
     stages {
-        // Explicit clone (required if NOT using Pipeline from SCM)
-        stage('Clone Repo') {
+        // cloning the repository
+        stage('Checkout') {
             steps {
                 script {
                     try {

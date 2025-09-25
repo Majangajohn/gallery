@@ -109,21 +109,84 @@ Merged tests from the `test` branch and updated the pipeline to run them, with e
    - Added a Test stage and email notification for failures.
    - Email includes job name, build number, stage that failed, and console URL.
    ```groovy
-   pipeline {
-       agent { docker { image 'node:lts' } }
-       environment { RENDER_DEPLOY_HOOK = credentials('render-deploy-hook') }
-       stages {
-           stage('Build') { steps { sh 'npm install' } }
-           stage('Test') { steps { sh 'npm test' } }
-           stage('Deploy') { steps { sh "curl -X POST \${RENDER_DEPLOY_HOOK}" } }
-       }
-       post {
-           failure {
-               mail to: 'email',
-                    subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${env.STAGE_NAME}",
-                    body: "The build failed in the ${env.STAGE_NAME} stage. Check console output at ${env.BUILD_URL} for details."
-           }
-       }
+      pipeline {  // Whole pipeline
+      agent {
+         docker {
+               image 'node:lts'
+         }
+      }
+
+      environment {  // Variables 
+         RENDER_DEPLOY_HOOK = credentials('render-deploy-hook')
+         RENDER_URL = 'https://darkroom-app.onrender.com'  // Actual Render URL
+         SLACK_CHANNEL = '#john_ip1'  // Channel
+         FAILED_STAGE = ''  // To capture failing stage for email
+      }
+
+      stages {
+         // cloning the repository
+         stage('Checkout') {
+               steps {
+                  script {
+                     try {
+                           git branch: 'master', url: 'https://github.com/Majangajohn/gallery.git'
+                     } catch (err) {
+                           FAILED_STAGE = 'Clone Repo'
+                           throw err
+                     }
+                  }
+               }
+         }
+
+         stage('Build') {
+               steps {
+                  script {
+                     try {
+                           sh 'npm install'
+                     } catch (err) {
+                           FAILED_STAGE = 'Build'
+                           throw err
+                     }
+                  }
+               }
+         }
+
+         stage('Test') {
+               steps {
+                  script {
+                     try {
+                           sh 'npm test'
+                     } catch (err) {
+                           FAILED_STAGE = 'Test'
+                           throw err
+                     }
+                  }
+               }
+         }
+
+         stage('Deploy') {
+               steps {
+                  script {
+                     try {
+                           sh "curl -X POST \${RENDER_DEPLOY_HOOK}"
+                     } catch (err) {
+                           FAILED_STAGE = 'Deploy'
+                           throw err
+                     }
+                  }
+               }
+         }
+      }
+
+      post {
+         failure {
+               mail to: 'jnmajanga@gmail.com',
+                  subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${FAILED_STAGE}",
+                  body: """The build failed in the ${FAILED_STAGE} stage at ${new Date().toString()}.
+   Commit: ${env.GIT_COMMIT ?: 'Unknown'}.
+   Check console output at ${env.BUILD_URL} for details."""
+         }
+      }
    }
    ```
 
@@ -149,29 +212,89 @@ Integrated Slack to send notifications on successful deploys, including build de
 2. **Updated Jenkinsfile**:
    - Added success notification with build ID, Render URL, and timestamp.
    ```groovy
-   pipeline {
-       agent { docker { image 'node:lts' } }
-       environment {
-           RENDER_DEPLOY_HOOK = credentials('render-deploy-hook')
-           RENDER_URL = '[Placeholder: Your Render URL]'
-           SLACK_CHANNEL = '#john_ip1'
-       }
-       stages {
-           stage('Build') { steps { sh 'npm install' } }
-           stage('Test') { steps { sh 'npm test' } }
-           stage('Deploy') { steps { sh "curl -X POST \${RENDER_DEPLOY_HOOK}" } }
-       }
-       post {
-           failure {
-               mail to: 'email',
-                    subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${env.STAGE_NAME}",
-                    body: "The build failed in the ${env.STAGE_NAME} stage. Check console output at ${env.BUILD_URL} for details."
-           }
-           success {
+      pipeline {  // Whole pipeline
+      agent {
+         docker {
+               image 'node:lts'
+         }
+      }
+
+      environment {  // Variables 
+         RENDER_DEPLOY_HOOK = credentials('render-deploy-hook')
+         RENDER_URL = 'https://darkroom-app.onrender.com'  // Actual Render URL
+         SLACK_CHANNEL = '#john_ip1'  // Channel
+         FAILED_STAGE = ''  // To capture failing stage for email
+      }
+
+      stages {
+         // cloning the repository
+         stage('Checkout') {
+               steps {
+                  script {
+                     try {
+                           git branch: 'master', url: 'https://github.com/Majangajohn/gallery.git'
+                     } catch (err) {
+                           FAILED_STAGE = 'Clone Repo'
+                           throw err
+                     }
+                  }
+               }
+         }
+
+         stage('Build') {
+               steps {
+                  script {
+                     try {
+                           sh 'npm install'
+                     } catch (err) {
+                           FAILED_STAGE = 'Build'
+                           throw err
+                     }
+                  }
+               }
+         }
+
+         stage('Test') {
+               steps {
+                  script {
+                     try {
+                           sh 'npm test'
+                     } catch (err) {
+                           FAILED_STAGE = 'Test'
+                           throw err
+                     }
+                  }
+               }
+         }
+
+         stage('Deploy') {
+               steps {
+                  script {
+                     try {
+                           sh "curl -X POST \${RENDER_DEPLOY_HOOK}"
+                     } catch (err) {
+                           FAILED_STAGE = 'Deploy'
+                           throw err
+                     }
+                  }
+               }
+         }
+      }
+
+      post {
+         failure {
+               mail to: 'jnmajanga@gmail.com',
+                  subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${FAILED_STAGE}",
+                  body: """The build failed in the ${FAILED_STAGE} stage at ${new Date().toString()}.
+   Commit: ${env.GIT_COMMIT ?: 'Unknown'}.
+   Check console output at ${env.BUILD_URL} for details."""
+         }
+
+         success {  // On success, send to Slack
                slackSend channel: "${SLACK_CHANNEL}",
-                         message: "Build #${env.BUILD_ID} succeeded at ${new Date().toString()}. Deployed to ${RENDER_URL}"
-           }
-       }
+                        message: "Build #${env.BUILD_ID} successful at ${new Date().toString()}. Commit: ${env.GIT_COMMIT ?: 'Unknown'}. Deployed to ${RENDER_URL}"
+         }
+      }
    }
    ```
 
