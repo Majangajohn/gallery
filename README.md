@@ -105,7 +105,21 @@ Merged tests from the `test` branch and updated the pipeline to run them, with e
 - Set SMTP server (e.g., smtp.gmail.com), port (465 for SSL), and enabled SSL.
 - Used sender email 'jnmajanga@gmail.com' with an app password (generated from Google account for security, stored in Jenkins global configuration—not in Jenkinsfile).
 - Tested configuration to ensure emails send correctly.
-- In the Jenkinsfile, the `post { failure { ... } }` block uses the `mail` step to send notifications. The recipient is hardcoded as 'jnmajanga@gmail.com' for simplicity, but could use credentials if needed (e.g., `mail to: credentials('email-recipient')` for sensitive emails).
+- In the Jenkinsfile, the `post { failure { ... } }` block uses the `mail` step to send notifications. The recipient is pulled from credentials (`email-recipient`) using `withCredentials` for security, avoiding hardcoding:
+  ```groovy
+  post {
+      failure {
+          withCredentials([string(credentialsId: 'email-recipient', variable: 'EMAIL_TO')]) {
+              mail to: "${EMAIL_TO}",
+                   subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${FAILED_STAGE}",
+                   body: """The build failed in the ${FAILED_STAGE} stage at ${new Date().toString()}.
+Commit: ${env.GIT_COMMIT ?: 'Unknown'}.
+Check console output at ${env.BUILD_URL} for details."""
+          }
+      }
+  }
+  ```
+  - Added credential 'email-recipient' in Jenkins as a secret text with value 'jnmajanga@gmail.com'.
 
 ### Steps
 1. **Merged Test Branch**:
@@ -189,11 +203,13 @@ Merged tests from the `test` branch and updated the pipeline to run them, with e
 
        post {
            failure {
-               mail to: 'jnmajanga@gmail.com',
-                    subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${FAILED_STAGE}",
-                    body: """The build failed in the ${FAILED_STAGE} stage at ${new Date().toString()}.
+               withCredentials([string(credentialsId: 'email-recipient', variable: 'EMAIL_TO')]) {
+                   mail to: "${EMAIL_TO}",
+                        subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${FAILED_STAGE}",
+                        body: """The build failed in the ${FAILED_STAGE} stage at ${new Date().toString()}.
 Commit: ${env.GIT_COMMIT ?: 'Unknown'}.
 Check console output at ${env.BUILD_URL} for details."""
+               }
            }
        }
    }
@@ -299,11 +315,13 @@ Integrated Slack to send notifications on successful deploys, including build de
 
        post {
            failure {
-               mail to: 'jnmajanga@gmail.com',
-                    subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${FAILED_STAGE}",
-                    body: """The build failed in the ${FAILED_STAGE} stage at ${new Date().toString()}.
+               withCredentials([string(credentialsId: 'email-recipient', variable: 'EMAIL_TO')]) {
+                   mail to: "${EMAIL_TO}",
+                        subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${FAILED_STAGE}",
+                        body: """The build failed in the ${FAILED_STAGE} stage at ${new Date().toString()}.
 Commit: ${env.GIT_COMMIT ?: 'Unknown'}.
 Check console output at ${env.BUILD_URL} for details."""
+               }
            }
 
            success {  // On success, send to Slack
