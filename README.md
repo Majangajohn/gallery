@@ -387,7 +387,7 @@ The landing page (`views/index.ejs`) displays the milestones prominently:
 The application is live at: https://darkroom-app.onrender.com
 
 ## Slack access
-https://app.slack.com/client/T09FWHYQVPH/C09G6D54ELB
+https://devopsb2c11.slack.com/archives/C09G6D54ELB
 
 ## Author
 - **Name**: John Nyange Majanga
