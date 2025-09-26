@@ -265,7 +265,7 @@ Integrated Slack to send notifications on successful deploys, including build de
 ```groovy  
 success {  // On success, send to Slack
     slackSend channel: "${SLACK_CHANNEL}",
-              tokenCredentialId: 'slack-token',
+              tokenCredentialId: 'slack-token-yaml',
               message: "Build #${env.BUILD_ID} successful at ${new Date().toString()}. Commit: ${env.GIT_COMMIT ?: 'Unknown'}. Deployed to ${RENDER_URL}"
 }
 ```
