@@ -103,7 +103,7 @@ Merged tests from the `test` branch and updated the pipeline to run them, with e
 ### Email Configuration
 - In Jenkins: Navigate to Manage Jenkins > Configure System > E-mail Notification.
 - Set SMTP server (e.g., smtp.gmail.com), port (465 for SSL), and enabled SSL.
-- Used sender email 'jnmajanga@gmail.com' with an app password (generated from Google account for security, stored in Jenkins global configuration—not in Jenkinsfile).
+- Used sender email 'john.nyange@student.moringaschool.com' with an app password (generated from Google account for security, stored in Jenkins global configuration—not in Jenkinsfile).
 - Tested configuration to ensure emails send correctly.
 - In the Jenkinsfile, the `post { failure { ... } }` block uses the `mail` step to send notifications. The recipient is pulled from credentials (`email-recipient`) using `withCredentials` for security, avoiding hardcoding:
   ```groovy
