@@ -84,7 +84,7 @@ pipeline {  // Whole pipeline
 
         success {  // On success, send to Slack
             slackSend channel: "${SLACK_CHANNEL}",
-                      tokenCredentialId: 'slack token for yaml',
+                      tokenCredentialId: 'slack-token-yaml',
                       message: "Build #${env.BUILD_ID} successful at ${new Date().toString()}. Commit: ${env.GIT_COMMIT ?: 'Unknown'}. Deployed to ${RENDER_URL}"
         }
     }
