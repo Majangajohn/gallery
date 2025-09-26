@@ -118,7 +118,7 @@ Check console output at ${env.BUILD_URL} for details."""
           }
       }
   }
-  ```
+
   - Added credential 'email-recipient' in Jenkins as a secret text with value 'jnmajanga@gmail.com'.
 
 ### Steps
