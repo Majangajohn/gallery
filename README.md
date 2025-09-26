@@ -82,8 +82,8 @@ Created a Jenkins pipeline to build and deploy the app automatically on GitHub p
      RUN groupadd -g $(stat -c %g /var/run/docker.sock) docker && usermod -aG docker jenkins  # Replace with      your host's docker GID
      USER jenkins
      ```
-   - Build the image: `docker build -t my-jenkins `.
-   - Run Jenkins in Docker: `docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock --name jenkins my-jenkins`.
+   - Build the image: `docker build -t jenkins `.
+   - Run Jenkins in Docker: `docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock --name jenkins jenkins`.
    - Access Jenkins: Open http://localhost:8080, unlock with initial admin password (from container logs or /var/jenkins_home/secrets/initialAdminPassword), install suggested plugins.
 
 2. **Pipeline Configuration**:
