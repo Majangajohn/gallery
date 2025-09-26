@@ -73,15 +73,18 @@ pipeline {  // Whole pipeline
 
     post {
         failure {
-            mail to: 'jnmajanga@gmail.com',
-                 subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${FAILED_STAGE}",
-                 body: """The build failed in the ${FAILED_STAGE} stage at ${new Date().toString()}.
-Commit: ${env.GIT_COMMIT ?: 'Unknown'}.
-Check console output at ${env.BUILD_URL} for details."""
+            withCredentials([string(credentialsId: 'email-recipient', variable: 'EMAIL_TO')]) {
+                mail to: "${EMAIL_TO}",
+                     subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${FAILED_STAGE}",
+                     body: """The build failed in the ${FAILED_STAGE} stage at ${new Date().toString()}.
+                    Commit: ${env.GIT_COMMIT ?: 'Unknown'}.
+                    Check console output at ${env.BUILD_URL} for details."""
+            }
         }
 
         success {  // On success, send to Slack
             slackSend channel: "${SLACK_CHANNEL}",
+                      tokenCredentialId: 'slack token for yaml',
                       message: "Build #${env.BUILD_ID} successful at ${new Date().toString()}. Commit: ${env.GIT_COMMIT ?: 'Unknown'}. Deployed to ${RENDER_URL}"
         }
     }
