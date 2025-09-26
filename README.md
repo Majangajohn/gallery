@@ -113,8 +113,8 @@ Merged tests from the `test` branch and updated the pipeline to run them, with e
               mail to: "${EMAIL_TO}",
                    subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${FAILED_STAGE}",
                    body: """The build failed in the ${FAILED_STAGE} stage at ${new Date().toString()}.
-Commit: ${env.GIT_COMMIT ?: 'Unknown'}.
-Check console output at ${env.BUILD_URL} for details."""
+                    Commit: ${env.GIT_COMMIT ?: 'Unknown'}.
+                     Check console output at ${env.BUILD_URL} for details."""
           }
       }
   }
@@ -207,8 +207,8 @@ Check console output at ${env.BUILD_URL} for details."""
                    mail to: "${EMAIL_TO}",
                         subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${FAILED_STAGE}",
                         body: """The build failed in the ${FAILED_STAGE} stage at ${new Date().toString()}.
-Commit: ${env.GIT_COMMIT ?: 'Unknown'}.
-Check console output at ${env.BUILD_URL} for details."""
+                        Commit: ${env.GIT_COMMIT ?: 'Unknown'}.
+                     Check console output at ${env.BUILD_URL} for details."""
                }
            }
        }
@@ -319,8 +319,8 @@ Integrated Slack to send notifications on successful deploys, including build de
                    mail to: "${EMAIL_TO}",
                         subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} in ${FAILED_STAGE}",
                         body: """The build failed in the ${FAILED_STAGE} stage at ${new Date().toString()}.
-Commit: ${env.GIT_COMMIT ?: 'Unknown'}.
-Check console output at ${env.BUILD_URL} for details."""
+                        Commit: ${env.GIT_COMMIT ?: 'Unknown'}.
+                        Check console output at ${env.BUILD_URL} for details."""
                }
            }
 
