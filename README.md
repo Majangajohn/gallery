@@ -230,7 +230,7 @@ Integrated Slack to send notifications on successful deploys, including build de
 ### Slack Configuration
 - Installed the "Slack Notification" plugin in Jenkins: Manage Jenkins > Plugins > Available > Search "Slack Notification" > Install and restart.
 - In Jenkins: Manage Jenkins > Configure System > Slack section.
-- Set Workspace (e.g., 'devopsb2c11'), Credential (added secret text credential 'slack-token' with the bot OAuth token), and Default Channel (optional).
+- Set Workspace (e.g., 'devopsb2c11.slack.com'), Credential (added secret text credential 'slack token for yaml' with the bot OAuth token), and Default Channel (optional).
 - Tested connection from the config page.
 - In the Jenkinsfile, the `post { success { ... } }` block uses the `slackSend` step from the plugin. The channel is set via environment variable, and the token is pulled from credentials (not hardcoded for security).
 
